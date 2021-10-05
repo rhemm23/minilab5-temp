@@ -246,7 +246,7 @@ int main(int argc, char *argv[]) {
 	*/
 	
 	struct timespec total_compute, start_time, end_time, start_compute, end_compute;
-	int total_compute_time = 0;
+	double total_compute_time = 0;
 	clock_gettime(CLOCK_REALTIME, &start_time); 	// grab initial start time
 	for (int i = 0; i < DIM_FULL/8; i++) {
 		for (int j =0; j < DIM_FULL/8; j++) {
@@ -261,7 +261,7 @@ int main(int argc, char *argv[]) {
 				clock_gettime(CLOCK_REALTIME, &start_compute);
 				afu.write(0x0400, 100);
 				clock_gettime(CLOCK_REALTIME, &end_compute);
-				total_compute_time += (end_compute.tv_sec - start_compute.tv_sec);
+				total_compute_time += (double)(end_compute.tv_sec - start_compute.tv_sec);
 			}
       for (int ii = 0; ii < 8; ii++) {
         unpack_from_C(ii, &output[i*8 + ii][j*8], afu);
@@ -269,12 +269,12 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	clock_gettime(CLOCK_REALTIME, &end_time);
-	int total_time = end_time.tv_sec - start_time.tv_sec;
-	int ops_rate = 2*DIM_FULL^3 / total_time;	// MM is O(n3) MACs, each MAC is 2 ops
-	int compute_ops_rate = 2*DIM_FULL^3 / total_compute_time; // TOPS ignoring data movement
+	double total_time = end_time.tv_sec - start_time.tv_sec;
+	double ops_rate = (double)(2*DIM_FULL^3) / (double)total_time;	// MM is O(n3) MACs, each MAC is 2 ops
+	double compute_ops_rate = (double)(2*DIM_FULL^3) / (double)total_compute_time; // TOPS ignoring data movement
 	
-  fprintf(stdout, "OPS RATE: %d\n", ops_rate);
-  fprintf(stdout, "COMPUTE OPS RATE: %d\n", compute_ops_rate);
+  fprintf(stdout, "OPS RATE: %.4f\n", ops_rate);
+  fprintf(stdout, "COMPUTE OPS RATE: %.4f\n", compute_ops_rate);
 
 	// Compare.
 	fprintf(stdout, "Calculation finished. Testing values...\n");
