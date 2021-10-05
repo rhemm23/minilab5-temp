@@ -262,10 +262,10 @@ int main(int argc, char *argv[]) {
 				afu.write(0x0400, 100);
 				clock_gettime(CLOCK_REALTIME, &end_compute);
 				total_compute_time += (end_compute.tv_sec - start_compute.tv_sec);
-        for (int ii = 0; ii < 8; ii++) {
-          unpack_from_C(ii, &output[i*8 + ii][j*8], afu);
-        }
 			}
+      for (int ii = 0; ii < 8; ii++) {
+          unpack_from_C(ii, &output[i*8 + ii][j*8], afu);
+      }
 		}
 	}
 	clock_gettime(CLOCK_REALTIME, &end_time);
