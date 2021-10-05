@@ -261,7 +261,7 @@ int main(int argc, char *argv[]) {
 				clock_gettime(CLOCK_REALTIME, &start_compute);
 				afu.write(0x0400, 100);
 				clock_gettime(CLOCK_REALTIME, &end_compute);
-				total_compute_time += (double)(end_compute.tv_sec - start_compute.tv_sec);
+				total_compute_time += (double)(end_compute.tv_nsec - start_compute.tv_nsec);
 			}
       for (int ii = 0; ii < 8; ii++) {
         unpack_from_C(ii, &output[i*8 + ii][j*8], afu);
@@ -269,7 +269,7 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	clock_gettime(CLOCK_REALTIME, &end_time);
-	double total_time = end_time.tv_sec - start_time.tv_sec;
+	double total_time = end_time.tv_nsec - start_time.tv_nsec;
 	double ops_rate = (double)(2*DIM_FULL^3) / (double)total_time;	// MM is O(n3) MACs, each MAC is 2 ops
 	double compute_ops_rate = (double)(2*DIM_FULL^3) / (double)total_compute_time; // TOPS ignoring data movement
 	
