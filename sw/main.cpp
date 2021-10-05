@@ -270,8 +270,8 @@ int main(int argc, char *argv[]) {
 	}
 	clock_gettime(CLOCK_REALTIME, &end_time);
 	double total_time = end_time.tv_nsec - start_time.tv_nsec;
-	double ops_rate = (double)(2*DIM_FULL^3) / (double)total_time;	// MM is O(n3) MACs, each MAC is 2 ops
-	double compute_ops_rate = (double)(2*DIM_FULL^3) / (double)total_compute_time; // TOPS ignoring data movement
+	double ops_rate = (double)(2*DIM_FULL*DIM_FULL*DIM_FULL) / (double)total_time;	// MM is O(n3) MACs, each MAC is 2 ops
+	double compute_ops_rate = (double)(2*DIM_FULL*DIM_FULL*DIM_FULL) / (double)total_compute_time; // TOPS ignoring data movement
 	
   fprintf(stdout, "OPS RATE: %.8f\n", (ops_rate * (1000000000)));
   fprintf(stdout, "COMPUTE OPS RATE: %.8f\n", (compute_ops_rate * (1000000000)));
