@@ -191,8 +191,8 @@ int main(int argc, char *argv[]) {
 	{
 		for(int x_ind = 0; x_ind < DIM_FULL; ++x_ind)
 		{
-			A_vals[y_ind][x_ind] = static_cast<int8_t>(rand() % 255);
-			B_vals[y_ind][x_ind] = static_cast<int8_t>(rand() % 255);
+			A_vals[y_ind][x_ind] = static_cast<int8_t>(rand() % 15);
+			B_vals[y_ind][x_ind] = static_cast<int8_t>(rand() % 15);
 		}
 	}
 
