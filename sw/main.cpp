@@ -252,11 +252,9 @@ int main(int argc, char *argv[]) {
 	clock_gettime(CLOCK_REALTIME, &start_time); 	// grab initial start time
 	for (int i = 0; i < DIM_FULL/8; i++) {
 		for (int j =0; j < DIM_FULL/8; j++) {
-			for (int ii = 0; ii < 8; ii++) {
-				send_row_C(ii, &output[(i*8)+ii][j*8], afu);
-			}
 			for (int k = 0; k < DIM_FULL/8; k++) {
 				for (int ii = 0; ii < 8; ii++) {
+          send_row_C(ii, &output[(i*8)+ii][j*8], afu);
 					send_row_A(ii, &A_vals[i*8 + ii][k], afu);
 					send_row_B(ii, &B_vals[k*8 + ii][i], afu);
 				}
@@ -264,9 +262,9 @@ int main(int argc, char *argv[]) {
 				afu.write(0x0400, 100);
 				clock_gettime(CLOCK_REALTIME, &end_compute);
 				total_compute_time += (end_compute.tv_sec - start_compute.tv_sec);
-			}
-			for (int ii = 0; ii < 8; ii++) {
-				unpack_from_C(ii, &output[i*8 + ii][j*8], afu);
+        for (int ii = 0; ii < 8; ii++) {
+          unpack_from_C(ii, &output[i*8 + ii][j*8], afu);
+        }
 			}
 		}
 	}
