@@ -255,8 +255,8 @@ int main(int argc, char *argv[]) {
 			for (int k = 0; k < DIM_FULL/8; k++) {
 				for (int ii = 0; ii < 8; ii++) {
           send_row_C(ii, &output[(i*8)+ii][j*8], afu);
-					send_row_A(ii, &A_vals[i*8 + ii][k], afu);
-					send_row_B(ii, &B_vals[k*8 + ii][i], afu);
+					send_row_A(ii, &A_vals[i*8 + ii][k*8], afu);
+					send_row_B(ii, &B_vals[k*8 + ii][i*8], afu);
 				}
 				clock_gettime(CLOCK_REALTIME, &start_compute);
 				afu.write(0x0400, 100);
