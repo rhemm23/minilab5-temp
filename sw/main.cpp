@@ -254,18 +254,14 @@ int main(int argc, char *argv[]) {
 				for (int ii = 0; ii < 8; ii++) {
           send_row_C(ii, &output[(i*8)+ii][j*8], afu);
 					send_row_A(ii, &A_vals[i*8 + ii][k*8], afu);
-					send_row_B(ii, &B_vals[k*8 + ii][i*8], afu);
+					send_row_B(ii, &B_vals[k*8 + ii][j*8], afu);
 				}
 				clock_gettime(CLOCK_REALTIME, &start_compute);
 				afu.write(0x0400, 100);
 				clock_gettime(CLOCK_REALTIME, &end_compute);
 				total_compute_time += (end_compute.tv_sec - start_compute.tv_sec);
         for (int ii = 0; ii < 8; ii++) {
-          C_TYPE temp[DIM];
-          unpack_from_C(ii, temp, afu);
-          for (int jj = 0; jj < 8; jj++) {
-            output[i*8 + ii][j*8 + jj] = temp[jj];
-          }
+          unpack_from_C(ii, &output[i*8 + ii][j*8], afu);
         }
 			}
 		}
