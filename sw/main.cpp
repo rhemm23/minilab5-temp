@@ -54,13 +54,13 @@ using namespace std;
 typedef int8_t AB_TYPE;
 typedef int16_t C_TYPE;
 #define DIM 8
-#define DIM_FULL 8
+#define DIM_FULL 16
 #define MAX_VAL _UI16_MAX
 #define DEBUG true
 
 AB_TYPE A_vals[DIM_FULL][DIM_FULL];
 AB_TYPE B_vals[DIM_FULL][DIM_FULL];
-C_TYPE output[DIM][DIM][DIM_FULL / DIM][DIM_FULL / DIM];
+C_TYPE output[DIM_FULL][DIM_FULL];
 C_TYPE output_reference[DIM_FULL][DIM_FULL];
 
 // Reflect Endian
@@ -187,16 +187,12 @@ int main(int argc, char *argv[]) {
 	fprintf(stdout, "FULL SYSTEM TEST\n---------------\n");
 	fprintf(stdout, "Populating A and B...\n");
 	// Generate A vals, B vals.
-	for(int y_ind = 0; y_ind < DIM_FULL / DIM; ++y_ind)
+	for(int y_ind = 0; y_ind < DIM_FULL; ++y_ind)
 	{
-		for(int x_ind = 0; x_ind < DIM_FULL / DIM; ++x_ind)
+		for(int x_ind = 0; x_ind < DIM_FULL; ++x_ind)
 		{
-			for (int row = 0; row < DIM; row++) {
-        for (int col = 0; col < DIM; col++) {
-          A_vals[row][col][y_ind][x_ind] = static_cast<int8_t>(rand() % 15);
-			    B_vals[row][col][y_ind][x_ind] = static_cast<int8_t>(rand() % 15);
-        }
-      }
+			A_vals[y_ind][x_ind] = static_cast<int8_t>(rand() % 15);
+			B_vals[y_ind][x_ind] = static_cast<int8_t>(rand() % 15);
 		}
 	}
 
@@ -212,7 +208,7 @@ int main(int argc, char *argv[]) {
 
 			for(ptrdiff_t wh = 0; wh < DIM_FULL; ++wh)
 			{
-				output_reference[y_ind][x_ind] += A_vals[y_ind % 8][wh % 8][y_ind / 8][wh / 8] * B_vals[wh % 8][x_ind % 8][wh / 8][x_ind / 8];
+				output_reference[y_ind][x_ind] += A_vals[y_ind][wh] * B_vals[wh][x_ind];
 			}
 		}
 	}
@@ -256,7 +252,7 @@ int main(int argc, char *argv[]) {
 		for (int j =0; j < DIM_FULL/8; j++) {
 			for (int k = 0; k < DIM_FULL/8; k++) {
 				for (int ii = 0; ii < 8; ii++) {
-          send_row_C(ii, &output[ii][0][i][j], afu);
+          send_row_C(ii, &output[(i*8)+ii][j*8], afu);
 					send_row_A(ii, &A_vals[i*8 + ii][k*8], afu);
 					send_row_B(ii, &B_vals[k*8 + ii][i*8], afu);
 				}
@@ -265,7 +261,7 @@ int main(int argc, char *argv[]) {
 				clock_gettime(CLOCK_REALTIME, &end_compute);
 				total_compute_time += (end_compute.tv_sec - start_compute.tv_sec);
         for (int ii = 0; ii < 8; ii++) {
-          unpack_from_C(ii, &output[ii][0][i][j], afu);
+          unpack_from_C(ii, &output[i*8 + ii][j*8], afu);
         }
 			}
 		}
