@@ -21,6 +21,7 @@
 // 1) request an FPGA with a specific AFU
 // 2) read and write from a memory-mapped register in the FPGA 
 
+#include <fstream>
 #include <cstdlib>
 #include <iostream>
 #include <cassert>
@@ -212,38 +213,6 @@ int main(int argc, char *argv[]) {
 			}
 		}
 	}
-
-	// Now try it with the AFU.
-	/*
-	// Write each value of A down.
-	fprintf(stdout, "Loading A into AFU...\n");
-	for(ptrdiff_t a_r = 0; a_r < DIM; ++a_r)
-	{
-		send_row_A(a_r, A_vals[a_r], afu);
-	}
-
-	// Push each value of B.
-	fprintf(stdout, "Loading B into AFU...\n");
-	for(ptrdiff_t b_r = 0; b_r < DIM; ++b_r)
-	{
-		send_row_B(b_r, B_vals[b_r], afu);
-	}
-
-	// Calculate
-	fprintf(stdout, "Performing Calculation...\n");
-	afu.write(0x0400, 100);
-	// Do we have to sleep?
-	//	usleep(1000*1000);
-	
-
-	// Read Values.
-	fprintf(stdout, "Reading Output from C...\n");
-
-	for(ptrdiff_t c_r = 0; c_r < DIM; ++c_r)
-	{
-		unpack_from_C(c_r, output[c_r], afu);
-	}
-	*/
 	
 	struct timespec total_compute, start_time, end_time, start_compute, end_compute;
 	double total_compute_time = 0;
@@ -273,6 +242,13 @@ int main(int argc, char *argv[]) {
 	double ops_rate = (double)(2*DIM_FULL*DIM_FULL*DIM_FULL) / (double)total_time;	// MM is O(n3) MACs, each MAC is 2 ops
 	double compute_ops_rate = (double)(2*DIM_FULL*DIM_FULL*DIM_FULL) / (double)total_compute_time; // TOPS ignoring data movement
 	
+  std::fstream fs;
+  fs.open("./data.out", std::fstream::in | std::fstream::out | std::fstream::app);
+  fs << "SIZE: " << DIM_FULL << "\n";
+  fs << "TERA OPS RATE: " << (ops_rate * 0.001) << "\n";
+  fs << "COMPUTE TERA OPS RATE: " << (compute_ops_rate * 0.001) << "\n\n";
+  fs.close();
+
   fprintf(stdout, "TERA OPS RATE: %.12f\n", (ops_rate * 0.001));
   fprintf(stdout, "COMPUTE TERA OPS RATE: %.12f\n", (compute_ops_rate * 0.001));
 
