@@ -54,7 +54,7 @@ using namespace std;
 typedef int8_t AB_TYPE;
 typedef int16_t C_TYPE;
 #define DIM 8
-#define DIM_FULL 16
+#define DIM_FULL 64
 #define MAX_VAL _UI16_MAX
 #define DEBUG true
 
@@ -273,8 +273,8 @@ int main(int argc, char *argv[]) {
 	double ops_rate = (double)(2*DIM_FULL*DIM_FULL*DIM_FULL) / (double)total_time;	// MM is O(n3) MACs, each MAC is 2 ops
 	double compute_ops_rate = (double)(2*DIM_FULL*DIM_FULL*DIM_FULL) / (double)total_compute_time; // TOPS ignoring data movement
 	
-  fprintf(stdout, "OPS RATE: %.8f\n", (ops_rate * (1000000000)));
-  fprintf(stdout, "COMPUTE OPS RATE: %.8f\n", (compute_ops_rate * (1000000000)));
+  fprintf(stdout, "TERA OPS RATE: %.12f\n", (ops_rate * 0.001));
+  fprintf(stdout, "COMPUTE TERA OPS RATE: %.12f\n", (compute_ops_rate * 0.001));
 
 	// Compare.
 	fprintf(stdout, "Calculation finished. Testing values...\n");
