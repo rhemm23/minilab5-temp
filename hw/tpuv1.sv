@@ -79,6 +79,7 @@ module tpuv1
         end
       end else if (addr == 16'h0400 && r_w == 1'b1) begin
         en_mat_mul <= 1'b1;
+        counter <= '0;
       end
     end
   end
