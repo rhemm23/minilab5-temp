@@ -54,7 +54,7 @@ using namespace std;
 typedef int8_t AB_TYPE;
 typedef int16_t C_TYPE;
 #define DIM 8
-#define DIM_FULL 8
+#define DIM_FULL 16
 #define MAX_VAL _UI16_MAX
 #define DEBUG true
 
@@ -273,9 +273,9 @@ int main(int argc, char *argv[]) {
 	
 	// Compare.
 	fprintf(stdout, "Calculation finished. Testing values...\n");
-	for(int r = 0; r < DIM_FULL; ++r)
+	for(int r = 0; r < DIM; ++r)
 	{
-		for(int c = 0; c < DIM_FULL; ++c)
+		for(int c = 0; c < DIM; ++c)
 		{
 			fprintf(stdout, "row: %d, col: %d | got: %hx, expected %hx ", r, c, output[r][c], output_reference[r][c]);
 			fflush(stdout);
