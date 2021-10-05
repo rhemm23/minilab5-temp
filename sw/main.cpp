@@ -273,8 +273,8 @@ int main(int argc, char *argv[]) {
 	int ops_rate = 2*DIM_FULL^3 / total_time;	// MM is O(n3) MACs, each MAC is 2 ops
 	int compute_ops_rate = 2*DIM_FULL^3 / total_compute_time; // TOPS ignoring data movement
 	
-  fprintf("OPS RATE: %d\n", ops_rate);
-  fprintf("COMPUTE OPS RATE: %d\n", compute_ops_rate);
+  fprintf(stdout, "OPS RATE: %d\n", ops_rate);
+  fprintf(stdout, "COMPUTE OPS RATE: %d\n", compute_ops_rate);
 
 	// Compare.
 	fprintf(stdout, "Calculation finished. Testing values...\n");
